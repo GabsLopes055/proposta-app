@@ -1,8 +1,22 @@
 package com.gabriel.propostaapp.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "tbl_proposta")
 public class Proposta {
 
@@ -14,7 +28,7 @@ public class Proposta {
 
     private int prazoPagamento;
 
-    private Boolean aprovada;
+    private Boolean aprovado;
 
     private boolean integrada;
 

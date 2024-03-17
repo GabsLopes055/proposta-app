@@ -15,11 +15,11 @@ public class PropostaRequestDTO {
 
     private String sobrenome;
 
-    private String telefone;
-
     private String cpf;
 
-    private String renda;
+    private String telefone;
+
+    private Double renda;
 
     private Double valorSolicitado;
 

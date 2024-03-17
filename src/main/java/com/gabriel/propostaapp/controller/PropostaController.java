@@ -12,12 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(name = "/api/v1/proposta")
+@RequestMapping(value = "/api/v1/proposta")
 @AllArgsConstructor
 public class PropostaController {
 
     private final PropostaService service;
-
 
     @PostMapping
     public ResponseEntity<PropostaResponseDTO> criarProposta(@RequestBody PropostaRequestDTO request){
