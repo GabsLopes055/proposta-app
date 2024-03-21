@@ -8,6 +8,8 @@ import com.gabriel.propostaapp.repository.PropostaRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class PropostaService {
@@ -21,6 +23,12 @@ public class PropostaService {
         this.repository.save(proposta);
 
         return PropostaMapper.INSTANCE.convertEntityToDto(proposta);
+    }
+
+    public List<PropostaResponseDTO> listarPropostas() {
+
+        return PropostaMapper.INSTANCE.convertListEntityToListDto(repository.findAll());
+
     }
 
 }
