@@ -3,6 +3,9 @@ package com.gabriel.propostaapp.config;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
@@ -11,11 +14,9 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMQConfiguration {
 
-//    private ConnectionFactory connectionFactory;
-//
-//    public RabbitMQConfiguration(ConnectionFactory connectionFactory) {
-//        this.connectionFactory = connectionFactory;
-//    }
+    @Value("${rabbitmq.propostapendente.exchange}")
+    private String exchange;
+
 
     @Bean
     public Queue propostaPendenteMsAnaliseCredito() {
@@ -50,7 +51,7 @@ public class RabbitMQConfiguration {
 
     @Bean
     public FanoutExchange fanoutExchangePropostaPendente() {
-        return ExchangeBuilder.fanoutExchange("proposta-pendente.ex").build();
+        return ExchangeBuilder.fanoutExchange(this.exchange).build();
     }
 
     @Bean
@@ -61,5 +62,20 @@ public class RabbitMQConfiguration {
     @Bean
     public Binding bindingPropostaPendenteMsNotificacao() {
         return BindingBuilder.bind(propostaPendenteMsNotificacao()).to(fanoutExchangePropostaPendente());
+    }
+
+    @Bean
+    public Jackson2JsonMessageConverter jacksonConverter(){
+        return new Jackson2JsonMessageConverter();
+    }
+
+
+    @Bean
+    public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
+        RabbitTemplate rabbitTemplate = new RabbitTemplate();
+        rabbitTemplate.setConnectionFactory(connectionFactory);
+        rabbitTemplate.setMessageConverter(jacksonConverter());
+
+        return rabbitTemplate;
     }
 }

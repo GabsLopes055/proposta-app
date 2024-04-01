@@ -5,16 +5,28 @@ import com.gabriel.propostaapp.DTOs.response.PropostaResponseDTO;
 import com.gabriel.propostaapp.entity.Proposta;
 import com.gabriel.propostaapp.mapper.PropostaMapper;
 import com.gabriel.propostaapp.repository.PropostaRepository;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@AllArgsConstructor
 public class PropostaService {
 
     private final PropostaRepository repository;
+
+    private final NotificacaoService notificacaoService;
+
+    private final String exchange;
+
+
+    public PropostaService(PropostaRepository repository,
+                           NotificacaoService notificacaoService,
+                           @Value("${rabbitmq.propostapendente.exchange}") String exchange) {
+        this.repository = repository;
+        this.notificacaoService = notificacaoService;
+        this.exchange = exchange;
+    }
 
     public PropostaResponseDTO criarProposta(PropostaRequestDTO request) {
 
@@ -22,7 +34,11 @@ public class PropostaService {
 
         this.repository.save(proposta);
 
-        return PropostaMapper.INSTANCE.convertEntityToDto(proposta);
+        PropostaResponseDTO response = PropostaMapper.INSTANCE.convertEntityToDto(proposta);
+
+        this.notificacaoService.notificar(response, this.exchange);
+
+        return response;
     }
 
     public List<PropostaResponseDTO> listarPropostas() {
