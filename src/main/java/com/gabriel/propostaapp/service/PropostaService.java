@@ -34,17 +34,25 @@ public class PropostaService {
 
         this.repository.save(proposta);
 
-        PropostaResponseDTO response = PropostaMapper.INSTANCE.convertEntityToDto(proposta);
+        this.notificarRabbitMQ(proposta);
 
-        this.notificacaoService.notificar(response, this.exchange);
+        return PropostaMapper.INSTANCE.convertEntityToDto(proposta);
 
-        return response;
     }
 
     public List<PropostaResponseDTO> listarPropostas() {
 
         return PropostaMapper.INSTANCE.convertListEntityToListDto(repository.findAll());
 
+    }
+
+    public void notificarRabbitMQ(Proposta proposta) {
+        try {
+            this.notificacaoService.notificar(proposta, exchange);
+        } catch (RuntimeException ex) {
+            proposta.setIntegrada(false);
+            this.repository.save(proposta);
+        }
     }
 
 }
