@@ -15,7 +15,7 @@ public class PropostaResponseDTO {
 
     private String nome;
 
-    private String sobrenome;
+    private String email;
 
     private String telefone;
 
@@ -31,4 +31,6 @@ public class PropostaResponseDTO {
 
     private String observacao;
 
+
 }
+

@@ -21,14 +21,14 @@ public interface PropostaMapper {
     @Mapping(target = "integrada", constant = "true")
     @Mapping(target = "descricao", ignore = true)
     @Mapping(target = "usuario.nome", source = "nome")
-    @Mapping(target = "usuario.sobrenome", source = "sobrenome")
+    @Mapping(target = "usuario.email", source = "email")
     @Mapping(target = "usuario.cpf", source = "cpf")
     @Mapping(target = "usuario.telefone", source = "telefone")
     @Mapping(target = "usuario.renda", source = "renda")
     public Proposta convertDtoToEntity(PropostaRequestDTO requestDTO);
 
     @Mapping(target = "nome", source = "usuario.nome")
-    @Mapping(target = "sobrenome", source = "usuario.sobrenome")
+    @Mapping(target = "email", source = "usuario.email")
     @Mapping(target = "telefone", source = "usuario.telefone")
     @Mapping(target = "cpf", source = "usuario.cpf")
     @Mapping(target = "renda", source = "usuario.renda")

@@ -13,7 +13,7 @@ public class PropostaRequestDTO {
 
     private String nome;
 
-    private String sobrenome;
+    private String email;
 
     private String cpf;
 
