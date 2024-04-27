@@ -30,9 +30,10 @@ public class PropostaSemIntegracao {
 
     @Scheduled(fixedDelay = 10, timeUnit = TimeUnit.SECONDS)
     public void buscarPropostasSemIntegracao() {
+
         repository.findAllByIntegradaIsFalse().forEach(proposta -> {
             try {
-                notificacaoService.notificar(proposta, exchange);
+                notificacaoService.notificar(proposta.getUsuario(), exchange);
                 atualizarProposta(proposta);
             } catch (RuntimeException ex) {
                 throw new RuntimeException("Não foi possível realizar a notificação !");
